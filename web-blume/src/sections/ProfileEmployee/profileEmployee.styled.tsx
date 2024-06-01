@@ -1,0 +1,42 @@
+import styled from "styled-components";
+import Container from "../../components/Containers/Container/Container";
+import { colors as c } from "../../styles/Colors";
+
+export const ContainerProfile = styled(Container)`
+    max-width: 100%;
+    height: 100%;
+    margin-right: 0px;
+    margin-left: 5%;
+    justify-content: start;
+    font-family: 'Poppins';
+    gap: 15px;
+    
+`; 
+
+export const ProfileContainer = styled.div`
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-direction: column;
+
+    &>div{
+        justify-content: end;
+        padding-left: 30px;
+    }
+
+    &>h1{
+        padding-right: 25px;
+        font-size: 28px;
+    }
+
+    &>div>div>h1{
+        font-size: 28px;
+    }
+`;
+
+export const LabelInfo = styled.span`
+    font-size: 12px;
+    color: ${c.green500};
+`;
