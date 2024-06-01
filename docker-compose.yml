@@ -7,11 +7,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:sqlserver://<AZURE_DB_HOSTNAME>:1433;databaseName=mydatabase
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: mypassword
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
 
   frontend:
     build:
@@ -20,6 +15,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      REACT_APP_API_URL: http://backend:8080  # Variável de ambiente para acessar o backend
+      API_PATH: http://backend:8080  
     depends_on:
       - backend
