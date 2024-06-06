@@ -35,26 +35,27 @@ jobs:
           fi
 
       - name: Clone or Pull Backend
-        if: steps.check_backend.outputs.backend_empty == 'true'
         run: |
-          git clone https://github.com/SPTech-Neos/Backend-Neos.git backend
-        else
-          run: |
+          if [ steps.check_backend.outputs.backend_empty == 'true' ]; then
+            git clone https://github.com/SPTech-Neos/Backend-Neos.git backend
+          else
             cd backend
             git checkout dev
             git pull origin dev
             cd ..
-
+          fi
+        
       - name: Clone or Pull Frontend
-        if: steps.check_frontend.outputs.frontend_empty == 'true'
         run: |
-          git clone https://github.com/SPTech-Neos/web-blume.git frontend
-        else
-          run: |
+          if [ steps.check_frontend.outputs.frontend_empty == 'true' ]; then
+            git clone https://github.com/SPTech-Neos/web-blume.git frontend
+          else
             cd frontend
             git checkout test
             git pull origin test
             cd ..
+          fi
+        
 
       - name: Check if user email is configured
         run: |
