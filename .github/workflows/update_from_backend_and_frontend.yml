@@ -38,21 +38,23 @@ jobs:
         if: steps.check_backend.outputs.backend_empty == 'true'
         run: |
           git clone https://github.com/SPTech-Neos/Backend-Neos.git backend
-        else
-          cd backend
-          git checkout dev
-          git pull origin dev
-          cd ..
+        else:
+          run: |
+            cd backend
+            git checkout dev
+            git pull origin dev
+            cd ..
 
       - name: Clone or Pull Frontend
         if: steps.check_frontend.outputs.frontend_empty == 'true'
         run: |
           git clone https://github.com/SPTech-Neos/web-blume.git frontend
-        else
-          cd frontend
-          git checkout test
-          git pull origin test
-          cd ..
+        else:
+          run: |
+            cd frontend
+            git checkout test
+            git pull origin test
+            cd ..
 
       - name: Check if user email is configured
         run: |
@@ -65,4 +67,4 @@ jobs:
         run: |
           git add .
           git commit -m "Update from backend and frontend"
-          git push
+          git puss
