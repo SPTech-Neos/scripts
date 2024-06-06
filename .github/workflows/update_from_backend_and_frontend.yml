@@ -1,0 +1,74 @@
+name: Update from Backend and Frontend
+
+on:
+  repository_dispatch:
+    types: [backend_update, frontend_update]
+
+jobs:
+  update_from_backend_and_frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout projeto-full
+        uses: actions/checkout@v2
+
+      - name: Check if backend folder exists
+        id: check_backend
+        run: |
+          if [ -n "$(ls -A backend)" ]; then
+            echo "Backend folder is not empty"
+            echo "::set-output name=backend_empty::false"
+          else
+            echo "Backend folder is empty"
+            echo "::set-output name=backend_empty::true"
+          fi
+
+      - name: Check if frontend folder exists
+        id: check_frontend
+        run: |
+          if [ -n "$(ls -A frontend)" ]; then
+            echo "Frontend folder is not empty"
+            echo "::set-output name=frontend_empty::false"
+          else
+            echo "Frontend folder is empty"
+            echo "::set-output name=frontend_empty::true"
+          fi
+
+      - name: Clone or Pull Backend
+        run: |
+          if [ "${{ steps.check_backend.outputs.backend_empty }}" == 'true' ]; then
+            git clone https://github.com/SPTech-Neos/Backend-Neos.git backend
+          else
+            cd backend
+            git fetch origin dev
+            git checkout dev
+            git pull origin dev
+            cd ..
+          fi
+        
+      - name: Clone or Pull Frontend
+        run: |
+          if [ "${{ steps.check_frontend.outputs.frontend_empty }}" == 'true' ]; then
+            git clone https://github.com/SPTech-Neos/web-blume.git frontend
+          else
+            cd frontend
+            git fetch origin test
+            git checkout test
+            git pull origin test
+            cd ..
+          fi
+        
+        
+
+      - name: Check if user email is configured
+        run: |
+          if ! git config --global --get user.email; then
+            git config --global user.email "victor.liracarlos@gmail.com"
+            git config --global user.name "VicLira"
+          fi
+
+      - name: Add, Commit and Push Changes
+        run: |
+          git add .
+          git commit -m "Update from backend and frontend"
+          git push
