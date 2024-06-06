@@ -1,20 +1,28 @@
 #!/bin/bash
 
+# Função para verificar se o comando anterior foi executado com sucesso
+check_status() {
+    if [ $? -ne 0 ]; then
+        echo "Erro: O comando anterior falhou. Abortando o script."
+        exit 1
+    fi
+}
+
 # Atualizar e instalar pacotes necessários
+echo "Atualizando a lista de pacotes..."
 sudo apt-get update
+check_status
+
+echo "Instalando pacotes: git, docker.io, docker-compose..."
 sudo apt-get install -y git docker.io docker-compose
+check_status
 
-# Adicionar o usuário ao grupo docker
-sudo usermod -aG docker $USER
+# Iniciar o docker-compose
+echo "Iniciando o docker-compose..."
+docker-compose up --build
+check_status
 
-# Reiniciar a sessão para aplicar as mudanças de grupo
-# Isso interrompe o script atual, então precisamos lidar com isso de outra forma
-
-# Informar ao usuário para reiniciar a sessão
-echo "Por favor, reinicie sua sessão para aplicar as mudanças de grupo, ou execute 'newgrp docker' para aplicar as mudanças sem reiniciar."
-
-# Esperar o usuário executar a instrução ou reiniciar manualmente e então continuar
-read -p "Pressione Enter para continuar depois de reiniciar a sessão ou executar 'newgrp docker'..."
+echo "O script foi concluído com sucesso."
 
 # Iniciar o docker-compose
 docker-compose up --build

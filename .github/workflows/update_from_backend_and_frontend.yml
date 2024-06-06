@@ -1,0 +1,35 @@
+name: Update from Backend and Frontend
+
+on:
+  repository_dispatch:
+    types: [backend_update, frontend_update]
+
+jobs:
+  update_from_backend_and_frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout projeto-full
+        uses: actions/checkout@v2
+
+      - name: Clone Backend
+        run: git clone https://github.com/SPTech-Neos/Backend-Neos.git backend
+
+      - name: Clone Frontend
+        run: git clone https://github.com/SPTech-Neos/web-blume.git frontend
+
+      - name: Copy Backend Files
+        run: cp -r backend/* .
+
+      - name: Copy Frontend Files
+        run: cp -r frontend/* .
+
+      - name: Commit and Push Changes
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN_SPTECH }}
+        run: |
+          git config --global user.email "victor.liracarlos@gmail.com"
+          git config --global user.name "VicLira"
+          git add .
+          git commit -m "Update from backend and frontend"
+          git push https://SPTech-Neos:${{ secrets.TOKEN_SPTECH }}@github.com/SPTech-Neos/scripts.git
