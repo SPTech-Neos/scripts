@@ -38,7 +38,7 @@ jobs:
         if: steps.check_backend.outputs.backend_empty == 'true'
         run: |
           git clone https://github.com/SPTech-Neos/Backend-Neos.git backend
-        else:
+        else
           run: |
             cd backend
             git checkout dev
@@ -49,7 +49,7 @@ jobs:
         if: steps.check_frontend.outputs.frontend_empty == 'true'
         run: |
           git clone https://github.com/SPTech-Neos/web-blume.git frontend
-        else:
+        else
           run: |
             cd frontend
             git checkout test
@@ -67,4 +67,4 @@ jobs:
         run: |
           git add .
           git commit -m "Update from backend and frontend"
-          git puss
+          git push
