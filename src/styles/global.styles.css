@@ -1,0 +1,57 @@
+/* @import url(''); */
+
+*{
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+    /* font-family: "Poppins", sans-serif; */
+    
+    list-style: none;
+    text-decoration: none;
+    scroll-behavior: smooth;
+    accent-color: var(--color-violet-300);
+}
+
+:root {
+    --color-gray-100: #FAFAFA;
+    --color-gray-200: #D6D6D6;
+    --color-gray-300: #BEBEBE;
+    --color-gray-500: #808080;
+    --color-gray-700: #303030;
+    --color-gray-900: #070707;
+
+    --color-green-100: #96FFA0;
+    --color-green-300: #62EE6F;
+    --color-green-800: #295F2B;
+
+    --color-violet-50: #D4D6FF;
+    --color-violet-100: #969AFF;
+    --color-violet-300: #8F93EC;
+    --color-violet-500: #7F5DE2;
+    --color-violet-800: #423881;
+    --color-violet-900: #31335F;
+
+    --color-orange-100: #F3BF8E;
+
+    --color-blue-100: #204DA4;
+
+    --color-status-success: #2DA739;
+    --color-status-warning: #E5C46E;
+    --color-status-error: #B51521;
+
+    --font-logo: 'Unica One';
+    --font-text: 'Poppins';
+    --font-detail: 'Inter';
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.input--medium {
+    border-radius: 0;
+}
