@@ -14,9 +14,11 @@ jobs:
 
       - name: Clone Backend
         run: git clone https://github.com/SPTech-Neos/Backend-Neos.git backend
+        working-directory: ./backend
 
       - name: Clone Frontend
         run: git clone https://github.com/SPTech-Neos/web-blume.git frontend
+        working-directory: ./frontend
 
       - name: Copy Backend Files
         run: cp -r backend/* .

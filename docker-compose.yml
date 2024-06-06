@@ -3,14 +3,14 @@ version: '3.3'
 services:
   backend:
     build:
-      context: ./Backend-Neos/neos-spring-java
+      context: ./backend/neos-spring-java
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
 
   frontend:
     build:
-      context: ./web-blume
+      context: ./fronted
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
