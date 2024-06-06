@@ -16,6 +16,7 @@ jobs:
         run: |
           if [ -d "backend" ]; then
             cd backend
+            git checkout dev
             git pull origin dev
             cd ..
           fi
@@ -24,6 +25,7 @@ jobs:
         run: |
           if [ -d "frontend" ]; then
             cd frontend
+            git checkout test
             git pull origin test
             cd ..
           fi
