@@ -13,22 +13,44 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Check if backend folder exists
+        id: check_backend
         run: |
-          if [ -d "backend" ]; then
-            cd backend
-            git checkout dev
-            git pull origin dev
-            cd ..
+          if [ -n "$(ls -A backend)" ]; then
+            echo "Backend folder is not empty"
+            echo "::set-output name=backend_empty::false"
+          else
+            echo "Backend folder is empty"
+            echo "::set-output name=backend_empty::true"
           fi
 
       - name: Check if frontend folder exists
+        id: check_frontend
         run: |
-          if [ -d "frontend" ]; then
-            cd frontend
-            git checkout test
-            git pull origin test
-            cd ..
+          if [ -n "$(ls -A frontend)" ]; then
+            echo "Frontend folder is not empty"
+            echo "::set-output name=frontend_empty::false"
+          else
+            echo "Frontend folder is empty"
+            echo "::set-output name=frontend_empty::true"
           fi
+
+      - name: Clone or Pull Backend
+        if: steps.check_backend.outputs.backend_empty == 'true'
+        run: |
+          git clone https://github.com/SPTech-Neos/Backend-Neos.git backend
+        else
+          cd backend
+          git pull origin dev
+          cd ..
+
+      - name: Clone or Pull Frontend
+        if: steps.check_frontend.outputs.frontend_empty == 'true'
+        run: |
+          git clone https://github.com/SPTech-Neos/web-blume.git frontend
+        else
+          cd frontend
+          git pull origin test
+          cd ..
 
       - name: Check if user email is configured
         run: |
