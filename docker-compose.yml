@@ -40,3 +40,6 @@ services:
       - mysql-data:/var/lib/mysql
       - ./init_script.sql:/docker-entrypoint-initdb.d/init_script.sql # Montando o script SQL como volume
 
+  volumes:
+    mysql:
+
