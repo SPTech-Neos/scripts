@@ -33,10 +33,13 @@ services:
       MYSQL_USER: teste
       MYSQL_PASSWORD: 12345
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_INITDB_SCRIPT: /docker-entrypoint-initdb.d/init_script.sql # Caminho para o script SQL
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./seu_script.sql:/docker-entrypoint-initdb.d/init_script.sql # Montando o script SQL como volume
 
-volumes:
-  mysql-data:
+  volumes:
+    mysql-data:
+
