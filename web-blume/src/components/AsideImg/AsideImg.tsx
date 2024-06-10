@@ -6,7 +6,7 @@ import { ArrowLeft } from "phosphor-react";
 const AsideImg: React.FC<S.AsideImgProps> = ({ imgUrl, bgColor, imgAlt }) => {
     return (
         <S.AsideImg imgAlt={imgAlt} bgColor={bgColor} imgUrl={imgUrl}>
-            <FloatButton>
+            <FloatButton href="/">
                 <ArrowLeft weight='bold' />
                 <p>Voltar</p> 
             </FloatButton>

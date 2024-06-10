@@ -9,7 +9,10 @@ export const Label = styled.span`
     position: relative;
     z-index: 1;
     top: 10px;
-    width: auto;
+    width: min-content;
+    word-break: keep-all;
+    text-wrap: nowrap;
+    align-self: left;
 
     background-color: ${c.gray100};
     margin: 0 25px;

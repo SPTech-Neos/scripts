@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { colors as c} from '../../../styles/Colors';
+import { colors as c } from '../../../styles/Colors';
 
 import * as Dialog from '@radix-ui/react-dialog';
 import { Link } from "react-router-dom";

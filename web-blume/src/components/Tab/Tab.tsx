@@ -5,8 +5,10 @@ import TabOption from "../TabOption/TabOption";
 import { ServiceCard, ProductCard } from "../Cards/ServiceCard/ServiceCard";
 import About from "../About/About";
 import Badge from "../Badges/AvaliationBadge/AvaliationBadge";
+import { FilterResponseDto } from "../../utils/Filter/filters.types";
+import { ProductResponseDto } from "../../utils/Products/Product/product.types";
 
-const Tab: React.FC<S.SectionProps> = ({theme}) => {
+const Tab: React.FC<S.SectionProps> = ({theme, establishmentInfo}) => {
 
     const [result, setResult] = useState("");
     
@@ -59,28 +61,34 @@ const Tab: React.FC<S.SectionProps> = ({theme}) => {
                     </div>
                 ):
                     <S.ResultBody id="section-escolhida">
-                        {result == 'servico'? (
-                            // cardsData.map((data, index) => (
-                            //     <div key={index}>
-                            //     </div>
-                            // ))
-                            <ServiceCard theme={theme} nome="Perfume" valor={10.25} />
-
-                        ) : result == 'produto'? (
-
-                            <ProductCard nome="Perfume" valor={10.90}>
-
-                            </ProductCard>
-                             // trocar para section certa
-
-                        ) : <About descricao="Passado por props no componente TAB">
-                                <Badge>
-                                    deixar
-                                </Badge>
-                                <Badge>
-                                    dinamico
-                                </Badge>
-                            </About>}
+                        {result === 'servico'? (
+                            establishmentInfo && establishmentInfo.filters ? (
+                                Array.isArray(establishmentInfo.filters) && establishmentInfo.filters.length > 0 ? 
+                                    establishmentInfo.filters.map((filter: FilterResponseDto, index: number) => (
+                                        <ServiceCard key={index} id={filter.service.id} theme={theme} nome={filter.service.specification} valor={filter.price} img={filter.service.imgUrl}/>
+                                    ))
+                                : "Sem serviços no momento"
+                            ) : null
+                    
+                        ) : result === 'produto' ? (
+                            establishmentInfo && establishmentInfo.products ? (
+                                Array.isArray(establishmentInfo.products) && establishmentInfo.products.length > 0 ? 
+                                    establishmentInfo.products.map((product: ProductResponseDto, index: number) => (
+                                        <ProductCard key={index} id={Number(product.id)} nome={product.name} valor={product.value} img={product.imgUrl} />
+                                    ))
+                                : "Sem serviços no momento"
+                            ) : null
+                        ) : (
+                            <About establishmentInfo={establishmentInfo == null ? null : establishmentInfo} imgUrl={establishmentInfo?.establishment.imgUrl}>
+                                {establishmentInfo && establishmentInfo.filters && (
+                                    Array.isArray(establishmentInfo.filters)
+                                        ? establishmentInfo.filters.slice(0, 2).map((filter: FilterResponseDto, index: number) => (
+                                            <Badge key={index}>{filter.service.specification}</Badge>
+                                        ))
+                                        : <span>"Sem serviços"</span>
+                                )}
+                            </About>
+                        )}
                     </S.ResultBody>
                 }
             </S.TabBody>    

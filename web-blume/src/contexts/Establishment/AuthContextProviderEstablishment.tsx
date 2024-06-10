@@ -5,6 +5,7 @@ import { EstablishmentResponseDto, EstablishmentRequestDto } from "../../utils/E
 import { EstablishmentAdapter } from "../../adapters/Establishment/Establishment";
 
 interface AuthContextType {
+  
   token: EstablishmentResponseDto | null;
   isAuthenticated: boolean;
   handleLogoutEstablishment: () => void;

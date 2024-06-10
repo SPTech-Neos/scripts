@@ -1,8 +1,8 @@
 import React from "react";
 import * as S from './floatButton.styled';
 
-export const FloatButton: React.FC<S.FloatButtonProps> = ({ children }) => {
+export const FloatButton: React.FC<S.FloatButtonProps> = ({ children, href }) => {
     return (
-        <S.FloatButton>{children}</S.FloatButton>
+        <S.FloatButton href={href}>{children}</S.FloatButton>
     );
 }

@@ -22,6 +22,7 @@ export const CardBody = styled.div<serviceProps>`
     flex-direction: row;
     border-radius: 15px;
     box-shadow: 0px 0px 8px ${c.gray500};
+    margin-right: 20px;
     color: ${(props) => getTheme(props.theme).mainColor};
 
     &:hover{
@@ -57,6 +58,7 @@ export const ImgService = styled.div<serviceProps>`
     width: 80%;
     height: 70px; 
     background: ${c.gray200} url(${(props) => props.img});
+    background-size: cover;
     border-radius: 5px;
 
 `;

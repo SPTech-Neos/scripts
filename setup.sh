@@ -14,6 +14,7 @@ sudo apt-get update
 check_status
 
 echo "Instalando pacotes: git, docker.io, docker-compose..."
+sudo dpkg --configure -a
 sudo apt-get install -y git docker.io docker-compose
 check_status
 
@@ -23,10 +24,6 @@ docker-compose up --build
 check_status
 
 echo "O script foi concluído com sucesso."
-
-# Iniciar o docker-compose
-docker-compose up --build
-
 
 # para usar o script:
 # Salve o script em um arquivo, por exemplo, setup.sh.

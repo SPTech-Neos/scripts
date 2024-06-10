@@ -3,14 +3,14 @@ import * as S from './about.styled';
 
 // import {colors as c} from '../../styles/Colors';
 
-const About: React.FC<S.AboutProps> = ({children, imgUrl, descricao}) => {
+const About: React.FC<S.AboutProps> = ({children, imgUrl, establishmentInfo}) => {
     return (
         <S.AboutContainer direction="row">
             <S.AboutDesc>
                 <h2>Descrição:</h2>
                 <S.Description>
                     <span>
-                    {descricao}
+                    {establishmentInfo?.establishment.company.cnpj || 'Sem descrição'}
                     </span>
                 </S.Description>
                 <h2>Categorias: </h2>
@@ -20,9 +20,8 @@ const About: React.FC<S.AboutProps> = ({children, imgUrl, descricao}) => {
             </S.AboutDesc>
 
             <S.AboutImage>
-                <S.AboutProfileImg imgUrl={imgUrl}/>
-                <h3>Nome (deixar dinâmico)</h3>
-                <span>Cargo (deixar dinamico ou tirar)</span>
+                <S.AboutProfileImg imgUrl={imgUrl} establishmentInfo={establishmentInfo}/>
+                <h3>{establishmentInfo?.establishment.name}</h3>   
             </S.AboutImage>
         </S.AboutContainer>
     );

@@ -3,6 +3,7 @@ import React from "react";
 
 import { AuthContextProvider as AuthContextProviderEmployee } from "../../contexts/User/AuthContextProviderEmployee";
 import { AuthContextProvider as AuthContextProviderClient } from "../../contexts/User/AuthContextProviderClient";
+import { AuthContextProvider as AuthContextProviderEstablishment } from "../../contexts/Establishment/AuthContextProviderEstablishment";
 
 
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -14,17 +15,21 @@ import ProfileEmployeeSection from "../../sections/ProfileEmployee/ProfileEmploy
 const ProfileEmployee: React.FC = () => {
 
     return (
+
 		<AuthContextProviderClient>
 			<AuthContextProviderEmployee>
 
-				<S.ProfileB2CSection>
-					<Sidebar /> {/*tipo perfil chumbado por enquanto */}
-					<ProfileEmployeeSection></ProfileEmployeeSection>
-				</S.ProfileB2CSection>
+				<AuthContextProviderEstablishment>
+					<S.ProfileB2CSection>
+						<Sidebar /> {/*tipo perfil chumbado por enquanto */}
+						<ProfileEmployeeSection></ProfileEmployeeSection>
+					</S.ProfileB2CSection>
+				</AuthContextProviderEstablishment>
 
 			</AuthContextProviderEmployee>
 			
 		</AuthContextProviderClient>
+
 	);
 
       

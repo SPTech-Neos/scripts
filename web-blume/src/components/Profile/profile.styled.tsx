@@ -7,7 +7,7 @@ import svg01 from '../.././assets/icon-profile.png';
 export interface ProfileProps {
     profile?: string; 
     tipoperfil?: "B2B" | "B2C";
-    username: string;
+    username: string | null | undefined;
 }
 
 export interface ContainerProfileProps {
@@ -23,7 +23,9 @@ export const ContainerProfile = styled(Container)`
 
 export const ContainerProfileImg = styled.div<ContainerProfileProps>`
     width: 125px;
+    max-width: 110px;
     height: 75%;
+    max-height: 110px;
     display: flex;
     border-radius: 100%;
     background-image: url(${(props) => props.profile || svg01});

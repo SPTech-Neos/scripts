@@ -1,13 +1,10 @@
 import React from "react";
 
-import Label from '../Label/Label';
-
 import * as S from './inputContainer.styled';
 
-const InputContainer: React.FC<S.InputContainerProps> = ({ label, children }) => {
+const InputContainer: React.FC<S.InputContainerProps> = ({ children }) => {
     return (
         <S.InputContainer>
-            <Label label={label}></Label>
             {children}
         </S.InputContainer>
     );

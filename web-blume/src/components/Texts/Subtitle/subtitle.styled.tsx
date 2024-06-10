@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { colors as c} from '../../../styles/Colors';
 import { device } from '../../../styles/breakpoints.styled';
+import { string } from 'yup';
 
 export interface SubtitleProps {
   children: string | JSX.Element | JSX.Element[];

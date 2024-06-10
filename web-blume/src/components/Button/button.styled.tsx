@@ -38,7 +38,7 @@ export const PrimaryButton = styled.button<PrimaryButtonProps>`
    background-color: ${c.violet300};
    box-shadow: 0px 0px 20px ${c.violet100};
    height: 45px;
-   color: ${c.violet100};
+   color: ${c.gray100};
    border: none;
    cursor: pointer;
 

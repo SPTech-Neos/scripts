@@ -24,7 +24,9 @@ import school.sptech.neosspringjava.domain.model.scheduling.Scheduling;
 import school.sptech.neosspringjava.domain.repository.clientRepository.ClientRepository;
 import school.sptech.neosspringjava.domain.repository.employeeRepository.EmployeeRepository;
 import school.sptech.neosspringjava.domain.repository.schedulingRepository.SchedulingRepository;
+import school.sptech.neosspringjava.domain.repository.schedulingStatusRepository.SchedulingStatusRepository;
 import school.sptech.neosspringjava.domain.repository.serviceRepository.ServiceRepository;
+import school.sptech.neosspringjava.service.schedulingService.SchedulingService;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +37,9 @@ public class ScheduligController {
     private final ClientRepository clientRepository;
     private final ServiceRepository serviceRepository;
     private final EmployeeRepository employeeRepository;
+    private final SchedulingStatusRepository schedulingStatusRepository;
     private final ScheduligMapper scheduligMapper;
+    private final SchedulingService schedulingService;
 
     @GetMapping
     public ResponseEntity<List<ScheduligResponse>> getAllSchedulig() {
@@ -46,7 +50,6 @@ public class ScheduligController {
     }
 
     @GetMapping("/{id}")
-
     public ResponseEntity<ScheduligResponse> getScheduligById(@PathVariable int id) {
         Scheduling scheduling = schedulingRepository.findById(id).orElseThrow();
         if (scheduling == null) {
@@ -58,13 +61,12 @@ public class ScheduligController {
     @PostMapping
     public ResponseEntity<ScheduligResponse> createSchedulig(@Valid @RequestBody ScheduligRequest scheduligRequest) {
    
-        Scheduling scheduling = Scheduling.builder()
-                .client(clientRepository.findById(scheduligRequest.idClient()).orElseThrow())
-                .service(serviceRepository.findById(scheduligRequest.idService()).orElseThrow())
-                .employee(employeeRepository.findById(scheduligRequest.idEmployee()).orElseThrow())
-                .dateTime(LocalDateTime.now())
-                .build();
-
+        Scheduling scheduling = new Scheduling();
+        scheduling.setService(serviceRepository.findById(scheduligRequest.idService()).orElseThrow());
+        scheduling.setEmployee(employeeRepository.findById(scheduligRequest.idEmployee()).orElseThrow());
+        scheduling.setClient(clientRepository.findById(scheduligRequest.idClient()).orElseThrow());
+        scheduling.setSchedulingStatus(schedulingStatusRepository.findById(scheduligRequest.idScheduligStatus()).orElseThrow());
+        scheduling.setDateTime((scheduligRequest.dateTime()==null)?LocalDateTime.now():scheduligRequest.dateTime());
         scheduling = schedulingRepository.save(scheduling);
         return ResponseEntity.ok().body(scheduligMapper.toScheduligResponse(scheduling));
     }
@@ -76,10 +78,11 @@ public class ScheduligController {
         if (scheduling == null) {
             return ResponseEntity.notFound().build();
         }
-        scheduling.setClient(clientRepository.findById(scheduligRequest.idClient()).orElseThrow());
         scheduling.setService(serviceRepository.findById(scheduligRequest.idService()).orElseThrow());
         scheduling.setEmployee(employeeRepository.findById(scheduligRequest.idEmployee()).orElseThrow());
-
+        scheduling.setClient(clientRepository.findById(scheduligRequest.idClient()).orElseThrow());
+        scheduling.setSchedulingStatus(schedulingStatusRepository.findById(scheduligRequest.idScheduligStatus()).orElseThrow());
+        scheduling.setDateTime((scheduligRequest.dateTime()==null)?LocalDateTime.now():scheduligRequest.dateTime());
         scheduling = schedulingRepository.save(scheduling);
         return ResponseEntity.ok().body(scheduligMapper.toScheduligResponse(scheduling));
     }
@@ -92,5 +95,17 @@ public class ScheduligController {
         }
         schedulingRepository.delete(scheduling);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<ScheduligResponse>> getSchedulesByClientId(@PathVariable Integer clientId) {
+        List<ScheduligResponse> schedules = schedulingService.getSchedulesByClientId(clientId);
+        return ResponseEntity.ok(schedules);
+    }
+
+    @GetMapping("/employee/{employeeId}")
+    public ResponseEntity<List<ScheduligResponse>> getSchedulesByEmployeeId(@PathVariable Integer employeeId) {
+        List<ScheduligResponse> schedules = schedulingService.getSchedulesByEmployeeId(employeeId);
+        return ResponseEntity.ok(schedules);
     }
 }

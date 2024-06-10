@@ -1,33 +1,38 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import * as S from './editModal.styled';
 
-import InputContainer from "../../../components/Input/InputContainer/InputContainer";
+import Cookies from "js-cookie";
 import InputText from "../../../components/Input/InputText/InputText";
 import { DangerButton, PrimaryButton } from "../../../components/Buttons/DefaultButton/DefaultButton";
 import { AuthContextEmployee } from "../../../contexts/User/AuthContextProviderEmployee";
+import { EmployeeResponseDto } from "../../../utils/Users/Employee/employee.types";
+import { EmployeeAdapter } from "../../../adapters/User/Employee/Employee";
+import { EstablishmentAdapter } from "../../../adapters/Establishment/Establishment";
 
-type Props = {
-    id?: string;
-    load?: boolean;
-}
 
-const EditModal: React.FC<Props> = ({id}) => {
-    const { handleUpdateEmployee } = useContext(AuthContextEmployee);
+const EditModal: React.FC<S.Props> = ({id, tipo}) => {
+    const { isAuthenticated, getEmployeeById } = useContext(AuthContextEmployee);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
 
+    const employeeAdapter = new EmployeeAdapter;
+    const establishmentAdapter = new EstablishmentAdapter;
+
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
+        console.log(name)
     };
     
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
+        console.log(email)
     };
     
     const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
+        console.log(password)
     };
     
     const closeModal = () => {
@@ -38,19 +43,70 @@ const EditModal: React.FC<Props> = ({id}) => {
         editModal?.classList.remove("active");
     }
 
-    const handleUpdateEmployeeData = async () => {
-        try {
-            const updatedFields = { name, email, password };
-            await handleUpdateEmployee(updatedFields);
-            closeModal();
-        } catch (error) {
-            console.error("Erro ao atualizar funcionário:", error);
+    const tokenFromCookie = Cookies.get('employeeInfo');
+    const token = tokenFromCookie ? JSON.parse(tokenFromCookie) : null;
+
+    
+    const handleUpdate = async () => {
+        if(tipo == "employee"){
+            if(isAuthenticated){
+                try {
+                    const newEmployee = {
+                        name: name,
+                        email: email,
+                        password: password
+                    }
+    
+                    const resultUpdate = await employeeAdapter.update(token.employeeId,newEmployee);
+                    console.log(resultUpdate)
+                    closeModal();
+                    handleReload();
+                } catch (error) {
+                    console.error("Erro ao atualizar funcionário:", error);
+                }
+            } else{
+                console.log("nada pra atualizar");
+            }
+        }else{
+            if(isAuthenticated){
+                try {
+                    const newEstablishment = {
+                        name: name,
+                        email: email,
+                        password: password
+                    }
+    
+                    const resultUpdate = await establishmentAdapter.update(token.establishment.id, newEstablishment);
+                    console.log(resultUpdate)
+                    closeModal();
+                    handleReload();
+                } catch (error) {
+                    console.error("Erro ao atualizar funcionário:", error);
+                }
+            } else{
+                console.log("nada pra atualizar");
+            }
         }
     };
-    
+
+    const handleReload = () => {
+        window.location.reload();
+    }
+
+    const [employeeInfo, setEmployeeInfo] = useState<EmployeeResponseDto | null>(null);
+
+    useEffect(() => {
+        const fetchEmployeeData = async () => {
+            const employeeEstab = await getEmployeeById(Number(token.employeeId)); 
+            console.log("emplyoyee Stab na editModal" + JSON.stringify(employeeEstab));
+            setEmployeeInfo(employeeEstab);
+            console.log(employeeInfo);
+        }
+        fetchEmployeeData();
+    }, [tokenFromCookie, isAuthenticated]);
 
     return (
-        <S.EditModalContainer id={id}>
+        <S.EditModalContainer id={id} tipo={tipo}>
         <S.EditModalBody>
 
             <S.ContainerAtencao>
@@ -62,15 +118,12 @@ const EditModal: React.FC<Props> = ({id}) => {
             </S.ContainerAtencao>
 
             <S.InputWrapper>
-                <InputContainer type="name" label="Nome Completo" placeholder="Kevin Rodrigues">
-                    <InputText type="name" value={name} onChange={handleNameChange} />
-                </InputContainer>
-                <InputContainer type="email" label="Email" placeholder="exemple@email.com">
-                    <InputText type="email" value={email} onChange={handleEmailChange} />
-                </InputContainer>
-                <InputContainer type="password" label="Senha" placeholder="****">
-                    <InputText type="password" value={password} onChange={handlePasswordChange} />
-                </InputContainer>
+               
+                <InputText type="name" label="Nome" theme="establishment" placeholder="Kevin Rodrigues..." value={name} onChange={handleNameChange} />
+                
+                <InputText type="email" label="Email" theme="establishment" placeholder="email@example.com"  value={email} onChange={handleEmailChange} />
+                    
+                <InputText type="password" label="Senha" theme="establishment" placeholder="*****"  value={password} onChange={handlePasswordChange} />
             </S.InputWrapper>
             
             <S.ButtonWrapper>
@@ -78,7 +131,7 @@ const EditModal: React.FC<Props> = ({id}) => {
                     Cancelar
                 </DangerButton>
 
-                <PrimaryButton width="180px" onClick={handleUpdateEmployeeData}>
+                <PrimaryButton width="180px" onClick={handleUpdate}>
                     Atualizar
                 </PrimaryButton>
             </S.ButtonWrapper>

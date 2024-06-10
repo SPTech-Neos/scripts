@@ -12,9 +12,9 @@ import { AuthContextEmployee } from "../../contexts/User/AuthContextProviderEmpl
 import * as S from './loginForm.styled';
 
 import Link from "../../components/Texts/Link/Link";
-import Subtitle from "../../components/Texts/Subtitle/Subtitle";
+// import Subtitle from "../../components/Texts/Subtitle/Subtitle";
 import { Checkbox } from "../../components/Input/Checkbox/Checkbox";
-import { PrimaryButton } from "../../components/Button/Button";
+import { PrimaryButton } from "../../components/Buttons/DefaultButton/DefaultButton";
 import { PrimaryTitle } from "../../components/Texts/Title/Title";
 
 import InputContainer from "../../components/Input/InputContainer/InputContainer";
@@ -22,8 +22,8 @@ import InputText from "../../components/Input/InputText/InputText";
 
 import Modal from "../../components/Modals/FormModal/Modal";
 
-import { ClientLoginDto } from "../../utils/client.types";
-import { EmployeeLoginDto } from "../../utils/Employee/employee.types";
+import { ClientLoginDto } from "../../utils/Users/Client/client.types";
+import { EmployeeLoginDto } from "../../utils/Users/Employee/employee.types";
 
 
 interface LoginFormProps {
@@ -106,9 +106,12 @@ const LoginForm: React.FC<LoginFormProps> = () => {
                     
                     setType("success");
                     setMessage("Login efetuado com sucesso!");
-                    setLinkTo("/client")
+                    setLinkTo("/employee")
                     setOpen(true);
                 }
+
+                const redirectPath = window.sessionStorage.getItem('location') || '/';
+                navigate(redirectPath, { replace: true });
             } else {
                 newErrors.push({ account: 'Credenciais inválidas' });
                 setErrors(newErrors);
@@ -137,8 +140,8 @@ const LoginForm: React.FC<LoginFormProps> = () => {
 
         <>
             <S.InputWrapper>
-                <InputContainer label="E-mail" type="email" placeholder="email@exemplo.com">
-                    <InputText type="email" value={email} onChange={handleEmailChange} />
+                <InputContainer>
+                    <InputText label="E-mail" type="email" placeholder="email@exemplo.com" value={email} onChange={handleEmailChange} theme={"client"} />
                 </InputContainer>
 
                 {errors.length > 0 && (
@@ -152,8 +155,8 @@ const LoginForm: React.FC<LoginFormProps> = () => {
             </S.InputWrapper>
 
             <S.InputWrapper>
-                <InputContainer label="Senha" type="password" placeholder="Bananinha123">
-                    <InputText type="password" value={password} onChange={handlePasswordChange} />
+                <InputContainer >
+                    <InputText label="Senha" type="password" placeholder="digite sua senha..." value={password} onChange={handlePasswordChange} theme={"client"} />
                 </InputContainer>
 
                 {errors.length > 0 && (
@@ -177,10 +180,14 @@ const LoginForm: React.FC<LoginFormProps> = () => {
             ENTRAR
         </PrimaryButton>
 
-        <Subtitle size="sm">
+        <S.SubtitleStyled size="sm">
+            <S.LinkContainer>
             <span> Não tem uma conta ainda? </span>
-            <Link href="google.com">Crie uma conta!</Link>
-        </Subtitle>
+                <S.LinkEmblashiment id="establish" href="/auth?mode=register&acc=establishment">Crie um estabelecimento!</S.LinkEmblashiment>
+                <span>OU</span>
+                <S.LinkClient id="client" href="/auth?mode=register&acc=client">Crie uma conta de cliente!</S.LinkClient>
+            </S.LinkContainer>
+        </S.SubtitleStyled>
         </S.LoginForm>
     </>
         

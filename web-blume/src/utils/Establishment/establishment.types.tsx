@@ -1,30 +1,29 @@
-import { ServiceResponseDto } from "../Products/service.types";
-import { FilterResponseDto } from "./filters.types";
-import { LocalResponseDto } from "./local.types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ProductResponseDto } from "../../utils/Products/Product/product.types"
+import { CompanyResponseDto } from "../Company/company.types";
+import { FilterResponseDto } from "../Filter/filters.types";
+import { LocalResponseDto } from "../Local/local.types";
+import {EmployeeResponseFullDto } from "../Users/Employee/employee.types";
 
 export interface EstablishmentRequestDto {
     name: string;
-    cnpj: string;
-    startShift: string;
-    endShift: string;
-    fkLocal: Number;
-    profilePic: string;
-    description: string;
-    fkServices: number[];
-    fkFilters: number[];
+    imgUrl?: string;
+    companyId: number;
+    localId: number;
 }
 
 export interface EstablishmentResponseDto {
-    establishmentId: number;
+    id: number;
     name: string;
-    description: string;
-    cnpj: string;
-    startShift: string;
-    endShift: string;
-    assessment: number;
-    qtdAssessment: number;
+    imgUrl?: string;
+    company: CompanyResponseDto;
     local: LocalResponseDto;
-    profilePic: string;
-    services: ServiceResponseDto[];
-    filters: FilterResponseDto[];
+}
+
+export interface EstablishmentFullResponseDto {
+    [x: string]: any;
+    establishment: EstablishmentResponseDto,
+    employees: EmployeeResponseFullDto,
+    filters: FilterResponseDto,
+    products: ProductResponseDto,
 }

@@ -22,7 +22,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import school.sptech.neosspringjava.api.configuration.security.jwt.GerenciadorTokenJwt;
-import school.sptech.neosspringjava.service.client.authentication.AuthenticationService;
+// import school.sptech.neosspringjava.service.client.authentication.AuthenticationService;
+import school.sptech.neosspringjava.service.user.authentication.AuthenticationService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,13 +56,45 @@ public class SecurityConfiguration {
             new AntPathRequestMatcher("/h2-console/**"),
             new AntPathRequestMatcher("/error/**"),
             new AntPathRequestMatcher("/client/login"),
+            // new AntPathRequestMatcher("/client/**"),
             new AntPathRequestMatcher("/client", "POST"),
             new AntPathRequestMatcher("/employee"),
             new AntPathRequestMatcher("/employee/**"),
             new AntPathRequestMatcher("/establishments"),
             new AntPathRequestMatcher("/establishments/**"),
+
+            new AntPathRequestMatcher("/address/**"), // apenas para testes daqui para baixo
+            new AntPathRequestMatcher("/address"),
+            new AntPathRequestMatcher("/local/**"),
+            new AntPathRequestMatcher("/local"),
+            new AntPathRequestMatcher("/company/**"),
+            new AntPathRequestMatcher("/company"),
+            new AntPathRequestMatcher("/ProductType/**"),
+            new AntPathRequestMatcher("/productType"),
+            new AntPathRequestMatcher("/products/**"),
+            new AntPathRequestMatcher("/products"),
+            new AntPathRequestMatcher("/rating/**"),
+            new AntPathRequestMatcher("/rating"),
+            new AntPathRequestMatcher("/employeeType/**"),
+            new AntPathRequestMatcher("/employeeType"),
+            new AntPathRequestMatcher("/serviceCategory/**"),
+            new AntPathRequestMatcher("/serviceCategory"),
+            new AntPathRequestMatcher("/serviceType/**"),
+            new AntPathRequestMatcher("/serviceType"),
+            new AntPathRequestMatcher("/service/**"),
+
             new AntPathRequestMatcher("/service"),
-            new AntPathRequestMatcher("/service/**")
+            new AntPathRequestMatcher("/employeeServices/**"),
+            new AntPathRequestMatcher("/employeeServices"),
+            new AntPathRequestMatcher("/filter/**"),
+            new AntPathRequestMatcher("/schedulingStatus"),
+            new AntPathRequestMatcher("/schedulingStatus/**"),
+            new AntPathRequestMatcher("/scheduling"),
+            new AntPathRequestMatcher("/scheduling/**"),
+            new AntPathRequestMatcher("/payment"),
+            new AntPathRequestMatcher("/payment/**"),
+            new AntPathRequestMatcher("/filter")
+
     };
 
     @Bean

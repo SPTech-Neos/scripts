@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import { colors as c} from '../../../styles/Colors';
 
 export interface FloatButtonProps {
-    children: string | JSX.Element | JSX.Element[] | Element | Element[]
+    children: string | JSX.Element | JSX.Element[] | Element | Element[];
+    href: string;
     //   props
 }
 
-export const FloatButton = styled.div<FloatButtonProps>`
+export const FloatButton = styled.a<FloatButtonProps>`
 
     background: none;
     border: none;
@@ -21,6 +22,7 @@ export const FloatButton = styled.div<FloatButtonProps>`
     position: absolute;
     top: 50px;
     left: 50px;
+    text-decoration: none;
 
     &:hover {
         text-decoration: underline;

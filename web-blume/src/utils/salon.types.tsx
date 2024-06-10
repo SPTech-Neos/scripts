@@ -1,4 +1,6 @@
 export interface Salon {
-    id: number;
-    title: string;
+    estabId: number;
+    imgUrl: string;
+    name: string;
+    servicesName: string[]; 
 }

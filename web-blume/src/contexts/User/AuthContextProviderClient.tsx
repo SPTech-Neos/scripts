@@ -1,15 +1,15 @@
 import { createContext, useState, useEffect, useRef } from "react";
 import Cookies from 'js-cookie';
 
-import { ClientAdapter } from "../../adapters/User/Client";
-import { ClientResponseDto, ClientLoginDto, ClientRequestDto } from "../../utils/client.types";
-import { Local } from "../../utils/Establishment/local.types";
+import { ClientAdapter } from "../../adapters/User/Client/Client";
+import { ClientResponseDto, ClientLoginDto, ClientRequestDto } from "../../utils/Users/Client/client.types";
+import { LocalRequestDto } from "../../utils/Local/local.types";
 
 interface AuthContextType {
   token: object | ClientResponseDto | null;
   isAuthenticated: boolean;
   handleLoginClient: (clientLoginDto: ClientLoginDto) => Promise<object | ClientResponseDto | null>;
-  userLocation: Local | null;
+  userLocation: LocalRequestDto | null;
   requestUserLocation: () => void;
   handleLogoutClient: () => void;
   handleUpdateClient: (updatedFields: Partial<ClientResponseDto>) => Promise<void>;
@@ -34,7 +34,7 @@ export const AuthContextClient = createContext<AuthContextType>({
 export const AuthContextProvider = ({ children }: { children: JSX.Element }) => {
   const [token, setToken] = useState<object | ClientResponseDto>({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userLocation, setUserLocation] = useState<Local | null>(null);
+  const [userLocation, setUserLocation] = useState<LocalRequestDto | null>(null);
 
   const clientAdapter = new ClientAdapter();
   const renewedSession = useRef(false);
@@ -63,20 +63,19 @@ export const AuthContextProvider = ({ children }: { children: JSX.Element }) => 
               const { address } = data;
               console.log("ADDRESS: " + JSON.stringify(address));
   
-              const userLocal: Local = {
-                idLocal: 0,
-                cep: address.postcode || '',
-                address: {
+              const userLocal: LocalRequestDto = {
+                /*cep: address.postcode || '',*/
+                /*address: {
                   idAddress: 0,
-                  street: address.road || '', 
-                  city: address.city || '', 
+                  street: address.road || '',
+                  city: address.city || '',
                   state: address.state || ''
-                },
+                },*/
                 number: 0,
                 floor: 0,
-                bloc: '',
-                complement: ''
-                ,
+                block: '',
+                complement: '',
+                address: 0
               };
   
               setUserLocation(userLocal);

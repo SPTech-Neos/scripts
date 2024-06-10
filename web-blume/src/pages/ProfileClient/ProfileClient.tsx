@@ -12,7 +12,7 @@ const ProfileB2C: React.FC = () => {
 			<AuthContextProviderEmployee>
 
 				<S.ProfileB2CSection>
-					<Sidebar /> {/*tipo perfil chumbado por enquanto */}
+					<Sidebar />
 					<ProfileB2CSection></ProfileB2CSection>
 				</S.ProfileB2CSection>
 

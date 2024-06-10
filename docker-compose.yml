@@ -3,18 +3,40 @@ version: '3.3'
 services:
   backend:
     build:
-      context: ./backend/neos-spring-java
+      context: ./Backend-Neos/neos-spring-java
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/blume
+      SPRING_DATASOURCE_USERNAME: teste
+      SPRING_DATASOURCE_PASSWORD: 12345
+    depends_on:
+      - mysql
 
   frontend:
     build:
-      context: ./fronted
+      context: ./web-blume
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
-      API_PATH: http://backend:8080  
+      API_PATH: http://4.228.216.80:8080  
     depends_on:
       - backend
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: blume
+      MYSQL_USER: teste
+      MYSQL_PASSWORD: 12345
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

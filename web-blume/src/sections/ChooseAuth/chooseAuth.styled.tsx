@@ -35,7 +35,7 @@ export const ChooseAuthBox = styled.div`
     justify-content: center;
     align-items: center;
 
-    background: ${c.gray100});
+    background: ${c.gray100};
     border-radius: 8px;
 `;
 

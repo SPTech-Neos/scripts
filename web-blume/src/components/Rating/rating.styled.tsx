@@ -1,25 +1,25 @@
 import styled from "styled-components";
 import { Star } from "phosphor-react";
-// import { Themes } from "../../styles/Colors";
 
-export interface props {
+export interface propsRating {
     onclick?: () => void
+    theme?: 'client' | 'establishment',
+    weight?: 'fill' | 'light' | null
 }
 
-
-
-export const StartRating = styled(Star)`
+export const StartRating = styled(Star)<propsRating>`
     position: relative;
 `;   
 
 
 
-export const RatingBody = styled.div<props>`
+export const RatingBody = styled.div<propsRating>`
     width: 80%;
-    height: 30%;
+    height: 10%;
     display: flex;
     justify-content: center;
     align-items: center;
+
 
     & #star-1, #star-5{
 

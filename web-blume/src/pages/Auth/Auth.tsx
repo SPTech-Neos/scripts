@@ -1,36 +1,42 @@
-import React from 'react';
+import React from "react";
 import { useLocation } from "react-router-dom";
 
-import ChooseAuth from '../../sections/ChooseAuth/ChooseAuth';
-import Login from '../../sections/Auth/Login/Login';
+import ChooseAuth from "../../sections/ChooseAuth/ChooseAuth";
+import Login from "../../sections/Auth/Login/Login";
 // import Signup from '../../sections/Signup/Signup';
-import { colors as c } from '../../styles/Colors';
+import { colors as c } from "../../styles/Colors";
 
 import { AuthContextProvider as AuthContextProviderClient } from "../../contexts/User/AuthContextProviderClient";
 import { AuthContextProvider as AuthContextProviderEmployee } from "../../contexts/User/AuthContextProviderEmployee";
+import Register from "../../sections/Auth/Register/Register";
 
 const Auth: React.FC = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
   // Extract the mode query parameter (default to 'login')
-  const mode = searchParams.get('mode') || 'login' || 'choose-auth';
+  const mode = searchParams.get("mode") || "login" || "choose-auth";
 
   const colorBg = c.gradientDefault;
 
-  
-
   return (
     <>
-      {mode === 'login' && <Login imgUrl={'/happy-woman.svg'} bgColor={colorBg} imgAlt={'Login'}></Login>}
+      {mode === "login" && (
+        <Login
+          imgUrl={"/happy-woman.svg"}
+          bgColor={colorBg}
+          imgAlt={"Login"}
+        ></Login>
+      )}
+      {mode === "register" && <Register></Register>}
       {/* {mode === 'signup' && <Signup></Signup>} */}
-      {mode === 'choose-auth' && 
+      {mode === "choose-auth" && (
         <AuthContextProviderClient>
           <AuthContextProviderEmployee>
             <ChooseAuth />
           </AuthContextProviderEmployee>
         </AuthContextProviderClient>
-      }
+      )}
     </>
   );
 };

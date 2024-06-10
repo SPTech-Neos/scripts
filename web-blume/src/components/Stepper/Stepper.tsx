@@ -1,104 +1,77 @@
-import React from 'react';
-import * as S from './stepper.style';
+import React from "react";
+import * as S from "./stepper.style";
 
-import { useMediaQuery } from 'react-responsive';
+export const Step: React.FC<S.StepProps> = ({ state, children }) => {
+  const states = ["complete", "onGoing", "pending"];
+  if (!states.includes(state)) state = "pending";
 
-export const Stepper: React.FC<S.StepperProps> = ({ steps, currentStep }) => {
+  return <S.Step state={state}>{children}</S.Step>;
+};
 
-    function Line({ state }: { state: string }) {
-        const states = ['complete', 'pending'];
+export const Stepper: React.FC<S.StepperProps> = ({
+  steps,
+  currentStep,
+  theme,
+}) => {
+  //   console.log(theme == "client");
 
-        if (!states.includes(state)) state = 'pending';
+  function generateSteps() {
+    let stepsArray = [];
+    let stepStates = [];
 
-        const isBelow470 = useMediaQuery({ maxWidth: 470 });
-        const isAbove1700 = useMediaQuery({ minWidth: 1700 });
+    for (let i = 1; i <= steps; i++) {
+      let state = "";
+      if (i === currentStep) {
+        state = "onGoing";
+      } else if (i < currentStep) {
+        state = "complete";
+      } else {
+        state = "pending";
+      }
 
-        let qtyCircles: number;
-        qtyCircles = isAbove1700 ? 8 : 6
-        qtyCircles = isBelow470 ? 3 : qtyCircles;
+      let imgSrc = theme == "client" ? "/checked.svg" : "/checked-green.svg";
 
-        function generateCircles() {
-            let circlesArray = [];
-
-            for (let i = 0; i < qtyCircles; i++) {
-                circlesArray.push(
-                    <S.Circle key={i} />
-                );
-            }
-
-            return circlesArray;
-        }
-
-        return (
-            <S.Line>
-                {generateCircles()}
-            </S.Line>
-        )
+      stepsArray.push(
+        <S.Step theme={theme} state={state} key={i}>
+          {state == "complete" ? <img src={imgSrc} alt="Concluído" /> : i}
+        </S.Step>
+      );
+      stepStates.push(state);
     }
 
-    function Step({ state }: { state: string }) {
-        const states = ['complete', 'onGoing', 'pending'];
-        if (!states.includes(state)) state = 'pending';
+    return { stepsArray, stepStates };
+  }
 
-        return (
-            <S.Step />
-        )
+  function generateLines(stepStates: string[]) {
+    let linesArray = [];
+
+    for (let i = 0; i < stepStates.length - 1; i++) {
+      // const lineState = stepStates[i] === "complete" ? "complete" : "pending";
+      linesArray.push(<S.Line theme={theme} key={`line${i}`} />);
     }
 
-    function generateSteps() {
-        let stepsArray = [];
-        let stepStates = [];
+    return linesArray;
+  }
 
-        for (let i = 1; i <= steps; i++) {
-            let state;
-            if (i === currentStep) {
-                state = 'onGoing';
-            } else if (i < currentStep) {
-                state = 'complete';
-            } else {
-                state = 'pending';
-            }
-            stepsArray.push(
-                <Step key={`step${i}`} state={state} />
-            );
-            stepStates.push(state);
-        }
+  const { stepsArray, stepStates } = generateSteps();
 
-        return { stepsArray, stepStates };
+  function generateStepper() {
+    let stepper = [];
+
+    for (let i = 0; i < stepsArray.length; i++) {
+      stepper.push(stepsArray[i]);
+
+      if (i < stepStates.length - 1) {
+        stepper.push(generateLines(stepStates)[i]);
+      }
     }
 
-    function generateLines(stepStates: string[]) {
-        let linesArray = [];
+    return stepper;
+  }
 
-        for (let i = 0; i < stepStates.length - 1; i++) {
-            const lineState = stepStates[i] === 'complete' ? 'complete' : 'pending';
-            linesArray.push(
-                <Line key={`line${i}`} state={lineState} />
-            );
-        }
-
-        return linesArray;
-    }
-
-    const { stepsArray, stepStates } = generateSteps();
-
-    function generateStepper() {
-        let stepper = [];
-
-        for (let i = 0; i < stepsArray.length; i++) {
-            stepper.push(stepsArray[i]);
-
-            if (i < stepStates.length - 1) {
-                stepper.push(generateLines(stepStates)[i]);
-            }
-        }
-
-        return stepper;
-    }
-
-    return (
-        <S.Stepper>
-            {generateStepper()}
-        </S.Stepper>
-    );
-}
+  return (
+    <S.Stepper steps={steps} currentStep={currentStep} theme={theme}>
+      {generateStepper()}
+    </S.Stepper>
+  );
+};

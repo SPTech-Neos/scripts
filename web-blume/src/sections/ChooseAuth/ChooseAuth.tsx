@@ -10,7 +10,7 @@ import Subtitle from "../../components/Texts/Subtitle/Subtitle";
 import CheckboxCard from "../../components/Cards/CheckboxCard/CheckboxCard";
 import clientCardImg from "../../assets/ChooseCardImgs/client-card-img.svg";
 import employeeCardImg from "../../assets/ChooseCardImgs/employee-card-img.svg";
-import { PrimaryButton } from "../../components/Button/button.styled";
+import { PrimaryButton } from "../../components/Buttons/DefaultButton/DefaultButton";
 
 const ChooseAuth: React.FC = () => {
     const navigate = useNavigate();

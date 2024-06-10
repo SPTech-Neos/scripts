@@ -1,7 +1,13 @@
 import styled from 'styled-components';
-import { colors as c} from '../../../styles/Colors';
+import { colors as c } from '../../../styles/Colors';
 
-export const EditModalContainer = styled.div`
+export type Props = {
+    id?: string;
+    tipo?: string | null | undefined;
+}
+
+
+export const EditModalContainer = styled.div<Props>`
     width: 120%;
     height: 100vh;
     background-color: #30303065;

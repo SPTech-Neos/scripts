@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { colors as c } from '../../../styles/Colors';
 
 export interface LinkProps {
+    id?: string;
     children: string | JSX.Element | JSX.Element[];
     href: string;
     size?: 'sm' | 'md' | 'lg';

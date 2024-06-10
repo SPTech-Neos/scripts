@@ -1,4 +1,5 @@
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 
 export type ProtectedRouteProps = {
     isAuthenticated: boolean;
@@ -6,10 +7,14 @@ export type ProtectedRouteProps = {
     outlet: JSX.Element;
 };
 
-export default function ProtectedRoute({ isAuthenticated, authenticationPath, outlet }: ProtectedRouteProps) {
-    if (isAuthenticated) {
-        return outlet;
-    } else {
-        return <Navigate to={{ pathname: authenticationPath }} />;
-    }
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ isAuthenticated, authenticationPath, outlet }) => {
+  const location = useLocation();
+
+  if (isAuthenticated) {
+    return outlet;
+  }
+
+  return <Navigate to={authenticationPath} state={{ from: location }} />;
 };
+
+export default ProtectedRoute;

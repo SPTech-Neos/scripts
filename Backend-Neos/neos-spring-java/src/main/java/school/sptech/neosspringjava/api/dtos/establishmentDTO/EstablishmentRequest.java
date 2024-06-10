@@ -7,16 +7,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import lombok.Builder;
+@Builder
 public record EstablishmentRequest(
         String name,
-        String cnpj,
-        LocalTime startShift,
-        LocalTime endShift,
-        Integer fkLocal,
-        String profilePic,
-        String description,
-        List<Integer> fkServices,
-        Double  assessment,
-        Integer qtdAssessment,
-        List<Integer> fkFilters) {
+        Integer companyId,
+        String imgUrl,
+        Integer localId
+     ) {
 }

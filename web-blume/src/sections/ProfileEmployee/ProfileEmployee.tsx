@@ -17,6 +17,7 @@ import { colors as c } from '../../styles/Colors';
 
 import Modal from "../../components/Modals/FormModal/Modal";
 import { ModalProps } from "../../components/Modals/FormModal/modal.styled";
+import { EmployeeResponseDto } from "../../utils/Users/Employee/employee.types";
 
 
 
@@ -24,18 +25,23 @@ import { ModalProps } from "../../components/Modals/FormModal/modal.styled";
 const ProfileEmployee: React.FC = () => {
     const navigate = useNavigate();
     const { isAuthenticated, handleDeleteEmployee } = useContext(AuthContextEmployee);
-    
-    // function getTheme(theme: string) {
-    //     return theme === "B2C"? Themes.client : Themes.establishment;
-    // }
 
-    const { isAuthenticated: isAuthenticatedEmployee } = useContext(AuthContextEmployee);
-  
+    const { isAuthenticated: isAuthenticatedEmployee, getEmployeeById } = useContext(AuthContextEmployee);
+    const [employeeInfo, setEmployeeInfo] = useState<EmployeeResponseDto | null>(null);
+    
 
     const tokenFromCookie = Cookies.get('employeeInfo');
     const token = tokenFromCookie ? JSON.parse(tokenFromCookie) : null;
 
     useEffect(() => {
+            const fetchEmployeeData = async () => {
+                const employeeEstab = await getEmployeeById(Number(token.employeeId)); 
+                console.log("emplyoyee Stab na profileEmployee" + JSON.stringify(employeeEstab));
+                setEmployeeInfo(employeeEstab);
+            }
+
+            fetchEmployeeData();
+
         if (tokenFromCookie) {
             console.log("Token de autenticação:", tokenFromCookie);
             console.log("LOGADO: " + isAuthenticatedEmployee);
@@ -43,7 +49,6 @@ const ProfileEmployee: React.FC = () => {
     }, [tokenFromCookie, isAuthenticatedEmployee]);
 
     const [modalProps, setModalProps] = useState<ModalProps | null>(null);
-    const [isOpenState, setIsOpenState] = useState(false);
 
     useEffect(() => {
         if (tokenFromCookie) {
@@ -51,6 +56,7 @@ const ProfileEmployee: React.FC = () => {
             console.log("LOGADO: " + isAuthenticated);
         }
     }, [tokenFromCookie, isAuthenticated]);
+
 
     const showModal = () => {
         const editModal = document.getElementById("editModal");
@@ -78,13 +84,13 @@ const ProfileEmployee: React.FC = () => {
 
     return(
             <E.ContainerProfile direction="column">
-                <HeaderProfile />
+                <HeaderProfile  />
 
-                <EditModal id="editModal"/>
+                <EditModal id="editModal" tipo="employee"/>
 
                 <E.ProfileContainer>
                     <h1>PERFIL</h1>
-                    <Profile username={token.name} />
+                    <Profile profile={employeeInfo?.imgUrl} username={employeeInfo?.name} />
                 </E.ProfileContainer>
                 <S.InfoContainer>
                     <S.Infos>
@@ -92,21 +98,21 @@ const ProfileEmployee: React.FC = () => {
                             E-mail
                         </E.LabelInfo>
                         <S.TextInfo>
-                            {token.email}
+                            {employeeInfo?.email}
                         </S.TextInfo>
 
                         <E.LabelInfo>
                             Endereço
                         </E.LabelInfo>
                         <S.TextInfo>
-                            Rua Coração de Maçã, 211, apt 52C
+                            {employeeInfo?.establishment.local.address.street}
                         </S.TextInfo>
 
                         <E.LabelInfo>
                             CEP
                         </E.LabelInfo>
                         <S.TextInfo>
-                            08474-230
+                            {/* {employeeInfo?.establishment.local.cep} */}
                         </S.TextInfo>
                     </S.Infos>
                 </S.InfoContainer>
@@ -126,15 +132,17 @@ const ProfileEmployee: React.FC = () => {
                             Editar
                         </S.ButtonUpdate>
                     </S.ContainerAtencaoButtons>
-                </S.ContainerAtencao>
-                <Modal
-                    type={modalProps?.type || ""}
-                    message={modalProps?.message || ""}
-                    isOpen={isOpenState}
-                    linkTo={modalProps?.linkTo || "/"}
-                    onConfirm={modalProps?.onConfirm}
-                    onClose={() => setIsOpenState(false)}
-                />
+                    {modalProps && (
+                        <Modal
+                            type={modalProps.type}
+                            message={modalProps.message}
+                            isOpen={modalProps.isOpen}
+                            linkTo={modalProps.linkTo}
+                            onConfirm={modalProps.onConfirm}
+                            onClose={() => setModalProps(null)}
+                        />
+                    )}
+                    </S.ContainerAtencao>
             </E.ContainerProfile>
     );
 };
